@@ -111,7 +111,7 @@ end
 
 local q7gridkeys
 
-local q7gridkeys_default_layout_mode = 2
+local q7gridkeys_default_layout_mode = 1
 
 local gridNbLevels = 15
 
@@ -355,7 +355,7 @@ end
 -- main
 
 local function init_params()
-  params:add_separator("mod_gridkeys", "gridkeys")
+  params:add_group("mod_gridkeys", "GRIDKEYS", 9)
 
   params:add_option("gridkeys_active", "gridkeys active", OFF_ON,
                     GRIDKEYS_STATE.script_uses_grid and tab.key(OFF_ON, "off") or tab.key(OFF_ON, "on"))
@@ -403,7 +403,7 @@ local function init_params()
                       midiutils.all_midi_notes_off(GRIDKEYS_STATE)
   end)
 
-  nb:add_param("gridkeys_nb_voice", "nb Voice")
+  
 
   params:add{type = "number", id = "gridkeys_velocity", name = "Velocity", min = 1, max = 127, default = 100}
 
@@ -476,7 +476,10 @@ local function init_params()
   end
 
   -- TODO: conditionally add those if script not using nb
+  nb:add_param("gridkeys_nb_voice", "↳ voice") 
+  
   nb:add_player_params()
+
 end
 
 
@@ -538,9 +541,8 @@ mod.hook.register("script_post_init", "gridkeys-script-post-init", function()
                     end
 
                     script_init_grid()
-
+                    
                     params:set('gridkeys_active', (GRIDKEYS_STATE.script_uses_grid and tab.key(OFF_ON, 'off') or tab.key(OFF_ON, 'on')))
-
                     GRIDKEYS_STATE.done_init = true
 end)
 
